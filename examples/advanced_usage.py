@@ -1,0 +1,177 @@
+"""Advanced usage examples demonstrating Jinja2 features."""
+
+from pathlib import Path
+
+from promptly import PromptLoader
+
+examples_dir = Path(__file__).parent
+prompts_dir = examples_dir.parent / "prompts"
+
+
+def main() -> None:
+    """Run advanced usage examples."""
+    loader = PromptLoader(prompts_dir)
+
+    # Example 1: Filters
+    print("=== Example 1: Jinja2 Filters ===")
+    print("Template uses: {{ name|upper }}, {{ items|join(', ') }}")
+    print()
+    try:
+        prompt = loader(
+            "templates/with_filters.md",
+            name="fernando",
+            items=["Python", "TypeScript", "Rust"],
+        )
+        print(prompt)
+    except FileNotFoundError:
+        print("Note: Create prompts/templates/with_filters.md to run this example")
+        print("Example template content:")
+        print("Name: {{ name|upper }}")
+        print("Languages: {{ items|join(', ') }}")
+    print()
+
+    # Example 2: Conditionals
+    print("=== Example 2: Conditionals ===")
+    print("Template has {% if language == 'Python' %} sections")
+    print()
+    try:
+        prompt = loader("tasks/code_review.md", language="Python", code="def foo(): pass")
+        print(prompt)
+    except FileNotFoundError:
+        print("Note: Create prompts/tasks/code_review.md to run this example")
+        print("Example template content:")
+        print("{% if language == 'Python' %}")
+        print("Review this Python code: {{ code }}")
+        print("{% else %}")
+        print("Review this {{ language }} code: {{ code }}")
+        print("{% endif %}")
+    print()
+
+    # Example 3: Loops
+    print("=== Example 3: Loops ===")
+    print("Template uses {% for item in items %}")
+    print()
+    try:
+        prompt = loader(
+            "templates/list.md",
+            title="Programming Languages",
+            items=["Python", "TypeScript", "Rust", "Go"],
+        )
+        print(prompt)
+    except FileNotFoundError:
+        print("Note: Create prompts/templates/list.md to run this example")
+        print("Example template content:")
+        print("# {{ title }}")
+        print("{% for item in items %}")
+        print("- {{ item }}")
+        print("{% endfor %}")
+    print()
+
+    # Example 4: Combining features
+    print("=== Example 4: Combining Multiple Features ===")
+    print("Using filters, loops, and conditionals together")
+    print()
+    try:
+        prompt = loader(
+            "templates/complex.md",
+            user="Alice",
+            languages=["Python", "Rust", "Go"],
+            level="advanced",
+        )
+        print(prompt)
+    except FileNotFoundError:
+        print("Note: Create prompts/templates/complex.md to run this example")
+        print("Example template content:")
+        print("Hello {{ user|title }}!")
+        print("{% if level == 'advanced' %}")
+        print("Your preferred languages:")
+        print("{% for lang in languages %}")
+        print("  {{ loop.index }}. {{ lang|upper }}")
+        print("{% endfor %}")
+        print("{% endif %}")
+    print()
+
+    # Example 5: Extending the loader with custom filters
+    print("=== Example 5: Custom Filters ===")
+    print("Adding a custom filter to the loader")
+    print()
+
+    # Add custom filter for wrapping code in markdown
+    def markdown_code(text: str, language: str = "python") -> str:
+        """Wrap text in markdown code block."""
+        return f"```{language}\n{text}\n```"
+
+    loader.env.filters["mdcode"] = markdown_code
+
+    # Create a temporary prompt to demonstrate
+    temp_prompt = prompts_dir / "temp_custom_filter.md"
+    temp_prompt.parent.mkdir(parents=True, exist_ok=True)
+    temp_prompt.write_text("{{ code|mdcode('python') }}")
+
+    prompt = loader("temp_custom_filter.md", code="def hello():\n    print('world')")
+    print(prompt)
+
+    # Clean up
+    temp_prompt.unlink()
+    print()
+
+    # Example 6: Global functions
+    print("=== Example 6: Custom Global Functions ===")
+    print("Adding a custom global function")
+    print()
+
+    import datetime
+
+    def now() -> str:
+        """Return current timestamp."""
+        return datetime.datetime.now().isoformat()
+
+    loader.env.globals["now"] = now
+
+    # Create temporary prompt
+    temp_prompt = prompts_dir / "temp_global.md"
+    temp_prompt.write_text("Generated at: {{ now() }}")
+
+    prompt = loader("temp_global.md")
+    print(prompt)
+
+    # Clean up
+    temp_prompt.unlink()
+    print()
+
+    # Example 7: Template composition with include
+    print("=== Example 7: Template Composition ===")
+    print("Using {% include %} to compose prompts")
+    print()
+
+    # Create example templates for composition
+    header = prompts_dir / "templates" / "header.md"
+    footer = prompts_dir / "templates" / "footer.md"
+    main = prompts_dir / "templates" / "composed.md"
+
+    header.parent.mkdir(parents=True, exist_ok=True)
+    header.write_text("# {{ title|default('Document') }}\n")
+    footer.write_text("\n---\nGenerated by promptly")
+    main.write_text("""
+{% include 'templates/header.md' %}
+
+{{ content }}
+
+{% include 'templates/footer.md' %}
+    """.strip())
+
+    try:
+        prompt = loader(
+            "templates/composed.md", title="My Report", content="This is the main content."
+        )
+        print(prompt)
+    finally:
+        # Clean up
+        for file in [header, footer, main]:
+            if file.exists():
+                file.unlink()
+    print()
+
+
+if __name__ == "__main__":
+    main()
