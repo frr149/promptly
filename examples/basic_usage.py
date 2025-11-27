@@ -1,18 +1,12 @@
 """Basic usage examples for promptly."""
 
-from pathlib import Path
-
 from promptly import PromptLoader
-
-# Setup
-examples_dir = Path(__file__).parent
-prompts_dir = examples_dir.parent / "prompts"
 
 
 def main() -> None:
     """Run basic usage examples."""
-    # Create loader
-    loader = PromptLoader(prompts_dir)
+    # Create loader - uses built-in prompts from package by default
+    loader = PromptLoader()
 
     # Example 1: Simple rendering
     print("=== Example 1: Simple Rendering ===")

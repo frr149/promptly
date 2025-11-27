@@ -9,47 +9,88 @@ import jinja2
 import jinja2.meta
 
 
+def _get_package_prompts_dir() -> Path:
+    """Get the default prompts directory from the package.
+
+    Returns:
+        Path to the prompts directory inside the package.
+    """
+    return Path(__file__).parent / "prompts"
+
+
 class PromptLoader:
     """Load and render prompt templates with Jinja2.
 
     This loader provides a simple interface for managing reusable prompt templates.
     It supports variable substitution, filters, conditionals, and loops through Jinja2.
 
+    By default, it loads prompts from the package's built-in prompts directory.
+    You can optionally specify a custom directory or enable fallback to search both.
+
     Attributes:
         _prompts_dir: Directory containing prompt templates.
+        _fallback_dir: Optional fallback directory for prompts.
         env: Jinja2 environment for template rendering.
 
     Example:
-        >>> loader = PromptLoader("prompts")
+        >>> # Use built-in prompts from package
+        >>> loader = PromptLoader()
+        >>> prompt = loader("developers/python.md")
+
+        >>> # Use custom prompts directory
+        >>> loader = PromptLoader("my_prompts")
         >>> prompt = loader("code_review.md", language="Python", code="def foo(): pass")
-        >>> variables = loader.variables("code_review.md")
-        >>> all_prompts = loader.list()
+
+        >>> # Use custom directory with fallback to package prompts
+        >>> loader = PromptLoader("my_prompts", fallback_to_package=True)
+        >>> prompt = loader("code_review.md")  # Searches my_prompts first, then package
     """
 
-    def __init__(self, prompts_dir: Path | str) -> None:
+    def __init__(
+        self,
+        prompts_dir: Path | str | None = None,
+        fallback_to_package: bool = False
+    ) -> None:
         """Initialize the prompt loader.
 
         Args:
-            prompts_dir: Directory containing prompt templates.
+            prompts_dir: Directory containing prompt templates. If None, uses package prompts.
+            fallback_to_package: If True and prompts_dir is provided, falls back to package
+                prompts when a template is not found in prompts_dir.
 
         Raises:
-            ValueError: If prompts_dir doesn't exist.
+            ValueError: If prompts_dir doesn't exist or is not a directory.
         """
-        self._prompts_dir = Path(prompts_dir)
+        # Determine the primary prompts directory
+        if prompts_dir is None:
+            self._prompts_dir = _get_package_prompts_dir()
+            self._fallback_dir = None
+        else:
+            self._prompts_dir = Path(prompts_dir)
+            if not self._prompts_dir.exists():
+                raise ValueError(
+                    f"Prompts directory does not exist: {self._prompts_dir.absolute()}"
+                )
+            if not self._prompts_dir.is_dir():
+                raise ValueError(
+                    f"Path is not a directory: {self._prompts_dir.absolute()}"
+                )
 
-        if not self._prompts_dir.exists():
-            raise ValueError(
-                f"Prompts directory does not exist: {self._prompts_dir.absolute()}"
-            )
-
-        if not self._prompts_dir.is_dir():
-            raise ValueError(
-                f"Path is not a directory: {self._prompts_dir.absolute()}"
-            )
+            # Set up fallback if requested
+            self._fallback_dir = _get_package_prompts_dir() if fallback_to_package else None
 
         # Configure Jinja2 environment with clean formatting
+        # If we have a fallback, use ChoiceLoader to search both directories
+        if self._fallback_dir is not None:
+            loader = jinja2.ChoiceLoader([
+                jinja2.FileSystemLoader(self._prompts_dir),
+                jinja2.FileSystemLoader(self._fallback_dir),
+            ])
+        else:
+            loader = jinja2.FileSystemLoader(self._prompts_dir)
+
         self.env = jinja2.Environment(
-            loader=jinja2.FileSystemLoader(self._prompts_dir),
+            loader=loader,
             trim_blocks=True,
             lstrip_blocks=True,
             undefined=jinja2.StrictUndefined,  # Raise errors for missing variables

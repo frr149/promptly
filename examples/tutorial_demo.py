@@ -4,8 +4,8 @@ from promptly import PromptLoader
 
 
 def main():
-    # Initialize loader
-    loader = PromptLoader("prompts")
+    # Initialize loader - uses built-in prompts from package by default
+    loader = PromptLoader()
 
     print("=" * 70)
     print("Promptly Tutorial Demo: n8n + Airtable Integration")
