@@ -6,12 +6,13 @@ A simple, elegant Python library for managing prompt templates across your LLM p
 
 ## Features
 
+- **Centralized Prompt Library**: All prompts included in the package, ready to use across all projects
 - **Minimalist Design**: Single dependency (Jinja2), minimal code, maximum clarity
 - **Jinja2 Templating**: Full power of Jinja2 - variables, filters, conditionals, loops
 - **Automatic Variable Detection**: No manual configuration needed
 - **Type Safe**: Complete type hints for better IDE support
 - **Version Control Friendly**: Store prompts as plain markdown files in Git
-- **Local & Shareable**: Use as local package or share via Git
+- **Flexible**: Use built-in prompts, custom prompts, or both with fallback
 - **Well Tested**: >90% test coverage with comprehensive test suite
 - **Pythonic API**: Intuitive, callable loader with clean error messages
 
@@ -107,14 +108,21 @@ dependencies = [
 ```python
 from promptly import PromptLoader
 
-# Create loader
-loader = PromptLoader("prompts")
+# Create loader - uses built-in prompts from package by default
+loader = PromptLoader()
 
-# Render a prompt
-prompt = loader("code_review.md",
+# List available prompts
+print(loader.list())
+# ['components/base_skills.md', 'developers/n8n.md', 'developers/airtable.md', ...]
+
+# Use a built-in prompt
+prompt = loader("developers/n8n.md")
+print(prompt)
+
+# Use a prompt with variables
+prompt = loader("tasks/code_review.md",
                 language="Python",
                 code="def divide(a, b): return a / b")
-
 print(prompt)
 ```
 
@@ -125,8 +133,14 @@ print(prompt)
 ```python
 from promptly import PromptLoader
 
-# Initialize with path to prompts directory
-loader = PromptLoader("prompts")
+# Use built-in prompts from package (default)
+loader = PromptLoader()
+
+# Or use custom prompts directory
+loader = PromptLoader("my_prompts")
+
+# Or use custom prompts with fallback to built-in prompts
+loader = PromptLoader("my_prompts", fallback_to_package=True)
 
 # Or use absolute path
 loader = PromptLoader("/absolute/path/to/prompts")
@@ -157,12 +171,30 @@ print(variables)  # {'language', 'code', 'focus'}
 ```python
 # List all prompts
 all_prompts = loader.list()
-print(all_prompts)  # ['system/assistant.md', 'tasks/code_review.md', ...]
+print(all_prompts)  # ['components/base_skills.md', 'developers/n8n.md', ...]
 
 # List with pattern
+dev_prompts = loader.list("developers/*.md")
 task_prompts = loader.list("tasks/*.md")
-system_prompts = loader.list("system/**/*.md")
 ```
+
+## Built-in Prompts
+
+Promptly includes these ready-to-use prompts:
+
+### Developers
+- **`developers/n8n.md`** - n8n workflow automation specialist
+- **`developers/airtable.md`** - Airtable database specialist
+- **`developers/n8n_airtable.md`** - Combined n8n + Airtable integration expert
+
+### Components
+- **`components/base_skills.md`** - Base developer skills (reusable component)
+- **`components/communication.md`** - Communication style guidelines (reusable component)
+
+### Tasks
+- **`tasks/code_review.md`** - Code review prompt template with variables
+
+These prompts use template composition with `{% include %}` to combine reusable components. Check the [Tutorial](TUTORIAL.md) for detailed examples.
 
 ## Jinja2 Syntax Guide
 

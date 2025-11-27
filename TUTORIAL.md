@@ -6,9 +6,11 @@ A hands-on guide to building reusable prompt templates for LLM applications.
 
 Promptly is a minimalist Python library for managing prompt templates across your LLM projects. Instead of hardcoding prompts in your application code, you store them as reusable Markdown templates with variables.
 
-**Benefits:**
+**Key Features:**
+
+- **Centralized prompt library**: All prompts included in the package, ready to use
 - **Separation of concerns**: Prompts live in files, not scattered in code
-- **Reusability**: Write once, use everywhere
+- **Reusability**: Write once, use everywhere across all your projects
 - **Version control**: Track prompt changes in Git like any other code
 - **Composition**: Combine smaller prompts into complex ones
 - **Full Jinja2 power**: Variables, conditionals, loops, filters
@@ -45,46 +47,76 @@ make test
 
 ## Quick Start
 
-### 1. Create Your Prompts Directory
+Promptly comes with built-in prompts ready to use. No need to create your own prompts directory!
+
+### 1. Install Promptly
 
 ```bash
-mkdir -p prompts/developers prompts/tools
+# Add promptly as a dependency
+uv add git+https://github.com/frr149/promptly.git
+
+# Or if working locally
+uv add --editable /path/to/promptly
 ```
 
-### 2. Create Your First Prompt
-
-Create `prompts/developers/python.md`:
-
-```markdown
-You are an expert Python developer with deep knowledge of:
-- Modern Python (3.11+)
-- Type hints and mypy
-- Testing with pytest
-- Async programming
-
-Help the user with their Python code following best practices.
-```
-
-### 3. Use It in Your Code
+### 2. Use Built-in Prompts
 
 ```python
 from promptly import PromptLoader
 
-# Initialize the loader
-loader = PromptLoader("prompts")
+# Initialize the loader - uses built-in prompts from the package
+loader = PromptLoader()
 
-# Load the prompt
-prompt = loader("developers/python.md")
+# Load a built-in prompt
+prompt = loader("developers/n8n.md")
 
 # Use it with your LLM
 print(prompt)
 ```
 
-## Adding New Prompts
+### 3. See Available Prompts
 
-### Simple Prompt with Variables
+```python
+# List all available prompts
+all_prompts = loader.list()
+print(all_prompts)
+# ['components/base_skills.md', 'developers/n8n.md', 'developers/airtable.md', ...]
 
-Create `prompts/tools/code_review.md`:
+# List specific patterns
+dev_prompts = loader.list("developers/*.md")
+print(dev_prompts)
+```
+
+### 4. (Optional) Use Custom Prompts
+
+If you need project-specific prompts, you can still provide your own directory:
+
+```python
+# Use custom prompts directory
+loader = PromptLoader("my_prompts")
+
+# Or use custom prompts with fallback to built-in prompts
+loader = PromptLoader("my_prompts", fallback_to_package=True)
+```
+
+## Built-in Prompts
+
+Promptly includes these ready-to-use prompts:
+
+- **`developers/n8n.md`** - n8n workflow automation specialist
+- **`developers/airtable.md`** - Airtable database specialist
+- **`developers/n8n_airtable.md`** - Combined n8n + Airtable integration expert
+- **`components/base_skills.md`** - Base developer skills (reusable component)
+- **`components/communication.md`** - Communication style guidelines (reusable component)
+- **`tasks/code_review.md`** - Code review prompt template
+
+## Adding New Prompts to the Library
+
+To add new prompts to Promptly's central library, add them to `src/promptly/prompts/` in the Promptly repository.
+
+### Example: Simple Prompt with Variables
+
+Create `src/promptly/prompts/tools/code_review.md`:
 
 ```markdown
 Review this {{ language }} code for:
