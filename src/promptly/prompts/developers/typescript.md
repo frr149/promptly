@@ -2,121 +2,122 @@
 
 ---
 
-## 🤖 FOR AI CODE ASSISTANTS
+## PARA ASISTENTES DE CÓDIGO IA
 
-When generating TypeScript code for this project, you MUST follow these mandatory rules:
+Cuando generes código TypeScript para este proyecto, DEBES seguir estas reglas obligatorias:
 
-### MANDATORY RULES (MUST)
+### REGLAS OBLIGATORIAS (MUST)
 
-1. **Hybrid Type Strategy:**
-   - USE branded types for simple validated primitives (Currency, EmailAddress, UserId)
-   - USE discriminated unions with `kind` field for complex domain entities (Money, Order, User)
+1. **Estrategia de Tipos Híbrida:**
+   - USA branded types para primitivos validados simples (Currency, EmailAddress, UserId)
+   - USA discriminated unions con campo `kind` para entidades de dominio complejas (Money, Order, User)
 
-2. **Factory Pattern (REQUIRED):**
-   - ALL domain objects MUST be created through factory functions
-   - NEVER use object literals to create domain objects
-   - ALL factories MUST validate inputs using type guards before creating objects
-   - ALWAYS throw descriptive errors for invalid inputs
+2. **Patrón Factory (OBLIGATORIO):**
+   - TODOS los objetos de dominio DEBEN crearse mediante funciones factory
+   - NUNCA uses object literals para crear objetos de dominio
+   - TODAS las factories DEBEN validar inputs usando type guards antes de crear objetos
+   - SIEMPRE lanza errores descriptivos para inputs inválidos
 
-3. **Runtime Validation (REQUIRED):**
-   - EVERY factory function MUST validate ALL inputs
-   - USE type guards (`is*`) for validation
-   - NEVER skip validation - no exceptions
+3. **Validación en Runtime (OBLIGATORIO):**
+   - CADA función factory DEBE validar TODOS los inputs
+   - USA type guards (`is*`) para validación
+   - NUNCA omitas la validación - sin excepciones
 
-4. **Immutability (REQUIRED):**
-   - ALL domain types MUST be readonly
-   - USE `readonly` modifiers on all properties
-   - USE `ReadonlyArray<T>` for arrays
-   - NEVER mutate existing objects - always return new instances
+4. **Inmutabilidad (OBLIGATORIO):**
+   - TODOS los tipos de dominio DEBEN ser readonly
+   - USA modificadores `readonly` en todas las propiedades
+   - USA `ReadonlyArray<T>` para arrays
+   - NUNCA mutes objetos existentes - siempre devuelve nuevas instancias
 
-5. **Equality Operations (REQUIRED):**
-   - EVERY domain type MUST implement an `isEqual` function
-   - Branded types: use reference equality on underlying primitives
-   - Discriminated unions: use structural equality (compare all properties)
-   - Collections: use multiset equality (counting approach)
+5. **Operaciones de Igualdad (OBLIGATORIO):**
+   - CADA tipo de dominio DEBE implementar una función `isEqual`
+   - Branded types: usa igualdad por referencia en primitivos subyacentes
+   - Discriminated unions: usa igualdad estructural (compara todas las propiedades)
+   - Colecciones: usa igualdad de multiset (enfoque de conteo)
 
-6. **Type Guards (REQUIRED):**
-   - EVERY domain type MUST have a corresponding guard function
-   - Guards MUST use type predicates: `(x: unknown): x is Type`
-   - Guards MUST validate the `kind` discriminator first (for discriminated unions)
-   - Guards MUST validate ALL required properties
+6. **Type Guards (OBLIGATORIO):**
+   - CADA tipo de dominio DEBE tener una función guard correspondiente
+   - Los guards DEBEN usar type predicates: `(x: unknown): x is Type`
+   - Los guards DEBEN validar el discriminador `kind` primero (para discriminated unions)
+   - Los guards DEBEN validar TODAS las propiedades requeridas
 
-7. **Error Handling (REQUIRED):**
-   - ALL domain errors MUST extend `AppError` base class
-   - ALWAYS include `userInfo` metadata with context
-   - USE error chaining via `previous` parameter when appropriate
+7. **Gestión de Errores (OBLIGATORIO):**
+   - TODOS los errores de dominio DEBEN extender la clase base `AppError`
+   - SIEMPRE incluye metadatos `userInfo` con contexto
+   - USA encadenamiento de errores mediante el parámetro `previous` cuando sea apropiado
 
-8. **Testing (REQUIRED):**
-   - EVERY feature MUST have both unit tests AND property-based tests
-   - Unit tests: test specific scenarios, error conditions, immutability
-   - Property-based tests: test algebraic properties and equivalence relations
-   - ALWAYS test: reflexivity, symmetry, transitivity for equality operations
+8. **Testing (OBLIGATORIO):**
+   - CADA funcionalidad DEBE tener tests unitarios Y tests basados en propiedades
+   - Tests unitarios: prueban escenarios específicos, condiciones de error, inmutabilidad
+   - Tests basados en propiedades: prueban propiedades algebraicas y relaciones de equivalencia
+   - SIEMPRE prueba: reflexividad, simetría, transitividad para operaciones de igualdad
 
-9. **File Organization (REQUIRED):**
-   - `*.types.ts` - Type definitions only (no runtime code)
-   - `*.make.ts` - Factory functions with validation
+9. **Organización de Archivos (OBLIGATORIO):**
+   - `*.types.ts` - Solo definiciones de tipos (sin código runtime)
+   - `*.make.ts` - Funciones factory con validación
    - `*.guard.ts` - Type guards
-   - `*.ops.ts` - Operations (pure functions)
-   - `*.errors.ts` - Error class definitions
+   - `*.ops.ts` - Operaciones (funciones puras)
+   - `*.errors.ts` - Definiciones de clases de error
 
-10. **Numeric Precision:**
-    - USE `bigint` for money and precise integer calculations
-    - NEVER use `number` for financial calculations
-    - Literal syntax: `42n` (with `n` suffix)
+10. **Precisión Numérica:**
+    - USA `bigint` para dinero y cálculos enteros precisos
+    - NUNCA uses `number` para cálculos financieros
+    - Sintaxis literal: `42n` (con sufijo `n`)
 
-### FORBIDDEN PATTERNS (NEVER)
+### PATRONES PROHIBIDOS (NUNCA)
 
-❌ **NEVER** create domain objects with object literals - ALWAYS use factories
-❌ **NEVER** skip runtime validation in factory functions
-❌ **NEVER** mutate domain objects - always create new instances
-❌ **NEVER** use `number` for money calculations - use `bigint`
-❌ **NEVER** forget to implement `isEqual` for domain types
-❌ **NEVER** skip the `kind` discriminator in discriminated unions
-❌ **NEVER** forget defensive copying in factory functions
-❌ **NEVER** compare objects with `===` - use `isEqual` for value equality
-❌ **NEVER** skip type guard validation before operations
-❌ **NEVER** write only unit tests - include property-based tests too
-❌ **NEVER** add references to yourself (Claude, Claude Code, AI assistants, etc.) in code, comments, documentation, or commit messages
+❌ **NUNCA** crees objetos de dominio con object literals - USA SIEMPRE factories
+❌ **NUNCA** omitas la validación en runtime en funciones factory
+❌ **NUNCA** mutes objetos de dominio - siempre crea nuevas instancias
+❌ **NUNCA** uses `number` para cálculos de dinero - usa `bigint`
+❌ **NUNCA** olvides implementar `isEqual` para tipos de dominio
+❌ **NUNCA** omitas el discriminador `kind` en discriminated unions
+❌ **NUNCA** olvides el copiado defensivo en funciones factory
+❌ **NUNCA** compares objetos con `===` - usa `isEqual` para igualdad por valor
+❌ **NUNCA** omitas la validación de type guard antes de operaciones
+❌ **NUNCA** escribas solo tests unitarios - incluye también tests basados en propiedades
+❌ **NUNCA** añadas referencias a ti mismo (Claude, Claude Code, asistentes IA, etc.) en código, comentarios, documentación o mensajes de commit
 
-### CODE GENERATION CHECKLIST
+### CHECKLIST DE GENERACIÓN DE CÓDIGO
 
-Before completing code generation, verify:
+Antes de completar la generación de código, verifica:
 
-- [ ] Factory function validates ALL inputs with type guards?
-- [ ] All type properties marked as `readonly`?
-- [ ] Discriminated union has `kind` field?
-- [ ] **For discriminated unions: Asked user about flyweight pattern?**
-- [ ] Type guard validates all required properties?
-- [ ] `isEqual` function implemented for the type?
-- [ ] Factory makes defensive copies of mutable inputs?
-- [ ] Factory uses `Object.freeze()` where appropriate?
-- [ ] Error classes extend `AppError` with `userInfo`?
-- [ ] Both unit tests AND property-based tests written?
-- [ ] Equivalence relations tested (reflexivity, symmetry, transitivity)?
-- [ ] Immutability tested (original objects not mutated)?
-- [ ] File naming follows conventions (*.types.ts, *.make.ts, etc.)?
-- [ ] **Code, comments, and commit messages free of AI/Claude self-references?**
+- [ ] ¿La función factory valida TODOS los inputs con type guards?
+- [ ] ¿Todas las propiedades de tipo marcadas como `readonly`?
+- [ ] ¿La discriminated union tiene campo `kind`?
+- [ ] Para discriminated unions: ¿Preguntaste al usuario sobre el patrón flyweight?
+- [ ] ¿El type guard valida todas las propiedades requeridas?
+- [ ] ¿La función `isEqual` está implementada para el tipo?
+- [ ] ¿La factory hace copias defensivas de inputs mutables?
+- [ ] ¿La factory usa `Object.freeze()` donde sea apropiado?
+- [ ] ¿Las clases de error extienden `AppError` con `userInfo`?
+- [ ] ¿Están escritos TANTO tests unitarios COMO tests basados en propiedades?
+- [ ] ¿Relaciones de equivalencia probadas (reflexividad, simetría, transitividad)?
+- [ ] ¿Inmutabilidad probada (objetos originales no mutados)?
+- [ ] ¿Los nombres de archivo siguen las convenciones (*.types.ts, *.make.ts, etc.)?
+- [ ] ¿Código, comentarios y mensajes de commit libres de auto-referencias a IA/Claude?
 
-### OUTPUT STYLE
+### ESTILO DE OUTPUT
 
-All generated code, comments, documentation, and commit messages MUST appear as if written by a human developer. NEVER include:
+Todo el código generado, comentarios, documentación y mensajes de commit DEBEN aparecer como si fueran escritos por un desarrollador humano. NUNCA incluyas:
 
-- References to AI assistants (Claude, Claude Code, GPT, etc.)
-- Co-authorship attributions to AI
-- Mentions of automated generation
-- Links to AI tools or services
+- Referencias a asistentes IA (Claude, Claude Code, GPT, etc.)
+- Atribuciones de coautoría a IA
+- Menciones de generación automatizada
+- Enlaces a herramientas o servicios de IA
 
-Write commit messages in first person as the developer making the change.
+Escribe mensajes de commit en primera persona como el desarrollador haciendo el cambio.
 
-### PATTERN TEMPLATES
+### PLANTILLAS DE PATRONES
 
-**Branded Type Pattern:**
+**Patrón Branded Type:**
+
 ```typescript
-// 1. Define symbol and type
+// 1. Define símbolo y tipo
 const SYMBOL: unique symbol = Symbol("TypeName");
 export type TypeName<Param> = Param & { readonly [SYMBOL]: true };
 
-// 2. Factory with validation
+// 2. Factory con validación
 export function makeTypeName<Param>(value: Param): TypeName<Param> {
     if (!isValid(value)) throw new InvalidError(value);
     return value as TypeName<Param>;
@@ -128,23 +129,24 @@ export function isTypeName(x: unknown): x is TypeName<Param> {
 }
 ```
 
-**Discriminated Union Pattern:**
+**Patrón Discriminated Union:**
+
 ```typescript
-// 1. Define type with kind
+// 1. Define tipo con kind
 export type Entity = {
     readonly kind: "Entity",
     readonly field1: Type1,
     readonly field2: Type2
 };
 
-// 2. Factory with full validation
+// 2. Factory con validación completa
 export function makeEntity(field1: Type1, field2: Type2): Entity {
     if (!isType1(field1)) throw new InvalidError(field1);
     if (!isType2(field2)) throw new InvalidError(field2);
     return { kind: "Entity", field1, field2 };
 }
 
-// 3. Guard validating all fields
+// 3. Guard validando todos los campos
 export function isEntity(x: unknown): x is Entity {
     return typeof x === "object" && x !== null
         && (x as any).kind === "Entity"
@@ -152,7 +154,7 @@ export function isEntity(x: unknown): x is Entity {
         && isType2((x as any).field2);
 }
 
-// 4. Equality operation
+// 4. Operación de igualdad
 export function isEqual(left: unknown, right: unknown): boolean {
     if (left === right) return true;
     if (!isEntity(left) || !isEntity(right)) return false;
@@ -161,103 +163,107 @@ export function isEqual(left: unknown, right: unknown): boolean {
 }
 ```
 
-### ⚠️ IMPORTANT: Ask About Flyweight Pattern for Discriminated Unions
+### IMPORTANTE: Preguntar sobre el Patrón Flyweight para Discriminated Unions
 
-**When creating a NEW discriminated union domain object, you MUST:**
+**Cuando crees un NUEVO objeto de dominio con discriminated union, DEBES:**
 
-1. **First, explain JavaScript equality to the user:**
-   ```
-   JavaScript equality reminder:
-   - Reference equality (===): compares if two variables point to the same object in memory
-   - Structural equality: compares if two objects have the same property values
+1. **Primero, explicar la igualdad en JavaScript al usuario:**
 
-   For discriminated unions (objects):
-   - WITHOUT flyweight: each factory call creates a NEW object
+   ```text
+   Recordatorio de igualdad en JavaScript:
+   - Igualdad por referencia (===): compara si dos variables apuntan al mismo objeto en memoria
+   - Igualdad estructural: compara si dos objetos tienen los mismos valores de propiedades
+
+   Para discriminated unions (objetos):
+   - SIN flyweight: cada llamada a factory crea un objeto NUEVO
      const a = makeEntity(...); const b = makeEntity(...);
-     a === b // false (different objects, even with same values)
-     Need structural comparison: isEqual(a, b)
+     a === b // false (objetos diferentes, incluso con los mismos valores)
+     Necesita comparación estructural: isEqual(a, b)
 
-   - WITH flyweight: factory returns cached instances for same identity
+   - CON flyweight: factory devuelve instancias cacheadas para la misma identidad
      const a = makeEntity("id1", ...); const b = makeEntity("id1", ...);
-     a === b // true (same cached object)
-     Reference equality works: a === b
+     a === b // true (mismo objeto cacheado)
+     Funciona igualdad por referencia: a === b
    ```
 
-2. **Analyze if flyweight makes sense for THIS specific domain object:**
-   - Does it have a natural identity/key that makes instances interchangeable?
-   - Will there be many instances with duplicate identities?
-   - Is it conceptually a "value object" that can be shared?
+2. **Analiza si flyweight tiene sentido para ESTE objeto de dominio específico:**
+   - ¿Tiene una identidad/clave natural que hace las instancias intercambiables?
+   - ¿Habrá muchas instancias con identidades duplicadas?
+   - ¿Es conceptualmente un "value object" que puede compartirse?
 
-3. **Present pros and cons for THIS specific case:**
-   ```
-   For [DomainObjectName], flyweight pattern would:
+3. **Presenta pros y contras para ESTE caso específico:**
 
-   ✅ BENEFITS:
-   - Memory efficiency: Only one instance per unique identity (estimate: X instances)
-   - Fast equality: Reference equality (===) instead of structural comparison
-   - Cache-friendly: Better CPU cache locality
-   - Guaranteed immutability: Cached instances can be frozen
+   ```text
+   Para [NombreDelObjetoDeDominio], el patrón flyweight resultaría en:
 
-   ❌ DRAWBACKS:
-   - Global state: Factory maintains a persistent cache
-   - Testing complexity: May need to clear cache between tests
-   - Memory leaks: If identities are dynamically generated, cache grows unbounded
-   - Added complexity: Factory logic becomes more complex
-   - Thread safety: Requires synchronization in multi-threaded contexts
+   ✅ BENEFICIOS:
+   - Eficiencia de memoria: Solo una instancia por identidad única (estima: X instancias)
+   - Igualdad rápida: Igualdad por referencia (===) en lugar de comparación estructural
+   - Cache-friendly: Mejor localidad de caché de CPU
+   - Inmutabilidad garantizada: Las instancias cacheadas pueden ser frozen
 
-   ASSESSMENT for [DomainObjectName]:
-   - Expected instances: [estimate based on domain]
-   - Identity cardinality: [fixed set like currencies, or unbounded like user IDs?]
-   - Memory impact: [calculate: instances × ~48 bytes per object]
-   - Equality frequency: [how often will equality comparisons happen?]
-   ```
+   ❌ DESVENTAJAS:
+   - Estado global: Factory mantiene una caché persistente
+   - Complejidad en testing: Puede necesitar limpiar caché entre tests
+   - Memory leaks: Si las identidades se generan dinámicamente, la caché crece sin límite
+   - Complejidad añadida: La lógica de factory se vuelve más compleja
+   - Thread safety: Requiere sincronización en contextos multi-hilo
 
-4. **Ask the user:**
-   ```
-   Should I implement the flyweight pattern for [DomainObjectName]?
-
-   Options:
-   A) YES - Implement flyweight (cached instances, === equality)
-   B) NO - Standard factory (new instances, structural equality via isEqual)
-
-   Recommendation: [Your analysis-based recommendation]
+   EVALUACIÓN para [NombreDelObjetoDeDominio]:
+   - Instancias esperadas: [estimación basada en dominio]
+   - Cardinalidad de identidad: [conjunto fijo como monedas, o ilimitado como IDs de usuario?]
+   - Impacto en memoria: [calcula: instancias × ~48 bytes por objeto]
+   - Frecuencia de igualdad: [¿con qué frecuencia ocurrirán comparaciones de igualdad?]
    ```
 
-5. **Implement based on user choice:**
-   - If YES: Add cache Map in factory, implement instance caching
-   - If NO: Standard factory without caching
+4. **Pregunta al usuario:**
 
-**Flyweight Implementation Pattern (if user chooses YES):**
+   ```text
+   ¿Debería implementar el patrón flyweight para [NombreDelObjetoDeDominio]?
+
+   Opciones:
+   A) SÍ - Implementar flyweight (instancias cacheadas, igualdad ===)
+   B) NO - Factory estándar (nuevas instancias, igualdad estructural vía isEqual)
+
+   Recomendación: [Tu recomendación basada en análisis]
+   ```
+
+5. **Implementa según la elección del usuario:**
+   - Si SÍ: Añade Map de caché en factory, implementa cacheo de instancias
+   - Si NO: Factory estándar sin cacheo
+
+**Patrón de Implementación Flyweight (si el usuario elige SÍ):**
+
 ```typescript
-// Cache for flyweight instances
+// Caché para instancias flyweight
 const entityCache = new Map<IdentityKey, Entity>();
 
 export function makeEntity(id: EntityId, field: Type): Entity {
-    // 1. Validate inputs
+    // 1. Validar inputs
     if (!isEntityId(id)) throw new InvalidError(id);
     if (!isType(field)) throw new InvalidError(field);
 
-    // 2. Create identity key for cache lookup
-    const cacheKey = id; // or composite key: `${id}|${field}` if multiple fields define identity
+    // 2. Crear clave de identidad para búsqueda en caché
+    const cacheKey = id; // o clave compuesta: `${id}|${field}` si múltiples campos definen identidad
 
-    // 3. Return cached instance if exists
+    // 3. Devolver instancia cacheada si existe
     if (entityCache.has(cacheKey)) {
         return entityCache.get(cacheKey)!;
     }
 
-    // 4. Create new instance
+    // 4. Crear nueva instancia
     const instance: Entity = Object.freeze({
         kind: "Entity",
         id,
         field
     });
 
-    // 5. Cache and return
+    // 5. Cachear y devolver
     entityCache.set(cacheKey, instance);
     return instance;
 }
 
-// Optional: Cache management utilities
+// Opcional: Utilidades de gestión de caché
 export function clearEntityCache(): void {
     entityCache.clear();
 }
@@ -267,178 +273,170 @@ export function getEntityCacheSize(): number {
 }
 ```
 
-**Note:** Branded types (simple primitives) get flyweight behavior for FREE via JavaScript string interning. Only ask about flyweight for discriminated unions (objects).
+**Nota:** Los branded types (primitivos simples) obtienen comportamiento flyweight GRATIS mediante string interning de JavaScript. Solo pregunta sobre flyweight para discriminated unions (objetos).
 
 ---
 
-See detailed patterns and examples below for complete guidance.
+Consulta los patrones y ejemplos detallados a continuación para una guía completa.
 
 ---
 
-## Overview
+## Resumen
 
-This document defines architectural patterns and coding guidelines for building **type-safe domain models** in TypeScript. These patterns emphasize **compile-time type safety**, **runtime validation**, **precise arithmetic**, and **immutability** throughout.
-
-Use this blueprint when building domain-driven applications that require:
-
-- Strong type safety with branded/nominal types
-- Immutable data structures
-- Precise numeric operations (e.g., financial calculations)
-- Clear separation between domain logic and data transfer
-- Comprehensive test coverage with both unit and property-based tests
+Patrones arquitectónicos para construir **modelos de dominio type-safe** en TypeScript con **seguridad de tipos en tiempo de compilación**, **validación en runtime**, **aritmética precisa** e **inmutabilidad**.
 
 ---
 
-## 🗂️ Directory Structure
+## Estructura de Directorios
 
-Every project following this blueprint MUST use the following structure:
+Todo proyecto que siga este blueprint DEBE usar la siguiente estructura:
 
 ```text
 project-root/
 ├── src/
-│   ├── core/                    # Foundational utilities (shared across domains)
-│   │   ├── errors.base.ts       # AppError base class
-│   │   └── guards.base.ts       # Common type guards (isFiniteNumber, etc.)
+│   ├── core/                    # Utilidades fundamentales (compartidas entre dominios)
+│   │   ├── errors.base.ts       # Clase base AppError
+│   │   └── guards.base.ts       # Type guards comunes (isFiniteNumber, etc.)
 │   │
-│   ├── <domain>/                # Domain modules (one directory per domain concept)
-│   │   ├── <domain>.types.ts    # Type definitions (branded types, discriminated unions)
-│   │   ├── <domain>.make.ts     # Factory functions with runtime validation
-│   │   ├── <domain>.guard.ts    # Type guards (runtime type predicates)
-│   │   ├── <domain>.ops.ts      # Operations (pure functions on domain types)
-│   │   ├── <domain>.errors.ts   # Domain-specific error classes
-│   │   ├── <domain>.dto.types.ts # DTO type definitions (optional - for persistence)
-│   │   └── <domain>.dto.ops.ts   # Domain ↔ DTO conversions (optional)
+│   ├── <domain>/                # Módulos de dominio (un directorio por concepto de dominio)
+│   │   ├── <domain>.types.ts    # Definiciones de tipos (branded types, discriminated unions)
+│   │   ├── <domain>.make.ts     # Funciones factory con validación en runtime
+│   │   ├── <domain>.guard.ts    # Type guards (predicados de tipo en runtime)
+│   │   ├── <domain>.ops.ts      # Operaciones (funciones puras sobre tipos de dominio)
+│   │   ├── <domain>.errors.ts   # Clases de error específicas del dominio
+│   │   ├── <domain>.dto.types.ts # Definiciones de tipos DTO (opcional - para persistencia)
+│   │   └── <domain>.dto.ops.ts   # Conversiones Domain ↔ DTO (opcional)
 │   │
-│   └── index.ts                 # Main entry point (optional barrel exports)
+│   └── index.ts                 # Punto de entrada principal (barrel exports opcionales)
 │
 ├── test/
-│   ├── unit/                    # Example-based tests
+│   ├── unit/                    # Tests basados en ejemplos
 │   │   └── <domain>.<feature>.unit.test.ts
 │   │
-│   └── pbt/                     # Property-based tests (fast-check)
+│   └── pbt/                     # Tests basados en propiedades (fast-check)
 │       └── <domain>.<feature>.pbt.test.ts
 │
 ├── package.json
-├── tsconfig.json                # TypeScript configuration
-├── tsconfig.test.json           # Test-specific TypeScript config (optional)
-└── vitest.config.ts             # Vitest configuration
+├── tsconfig.json                # Configuración de TypeScript
+├── tsconfig.test.json           # Configuración de TypeScript específica para tests (opcional)
+└── vitest.config.ts             # Configuración de Vitest
 ```
 
 ---
 
-## 📝 Naming Conventions
+## Convenciones de Nomenclatura
 
-### File Naming Rules
+### Reglas de Nomenclatura de Archivos
 
-Files MUST follow a strict **dot-separated pattern** indicating their purpose:
+Los archivos DEBEN seguir un **patrón estricto separado por puntos** indicando su propósito:
 
-| Pattern | Purpose | Examples |
+| Patrón | Propósito | Ejemplos |
 |---------|---------|----------|
-| `*.types.ts` | Type definitions only (no runtime code) | `user.types.ts`, `order.types.ts` |
-| `*.make.ts` | Factory functions (constructors with validation) | `user.make.ts`, `order.make.ts` |
-| `*.guard.ts` | Type guards (runtime validation predicates) | `user.guard.ts`, `order.guard.ts` |
-| `*.ops.ts` | Operations (pure functions on types) | `user.ops.ts`, `order.ops.ts` |
-| `*.errors.ts` | Error class definitions | `user.errors.ts`, `order.errors.ts` |
-| `*.dto.types.ts` | Data Transfer Object types | `user.dto.types.ts` |
-| `*.dto.ops.ts` | DTO conversion operations | `user.dto.ops.ts` |
-| `*.base.ts` | Base/foundational utilities | `errors.base.ts`, `guards.base.ts` |
+| `*.types.ts` | Solo definiciones de tipos (sin código runtime) | `user.types.ts`, `order.types.ts` |
+| `*.make.ts` | Funciones factory (constructores con validación) | `user.make.ts`, `order.make.ts` |
+| `*.guard.ts` | Type guards (predicados de validación en runtime) | `user.guard.ts`, `order.guard.ts` |
+| `*.ops.ts` | Operaciones (funciones puras sobre tipos) | `user.ops.ts`, `order.ops.ts` |
+| `*.errors.ts` | Definiciones de clases de error | `user.errors.ts`, `order.errors.ts` |
+| `*.dto.types.ts` | Tipos Data Transfer Object | `user.dto.types.ts` |
+| `*.dto.ops.ts` | Operaciones de conversión DTO | `user.dto.ops.ts` |
+| `*.base.ts` | Utilidades base/fundamentales | `errors.base.ts`, `guards.base.ts` |
 
-### Test File Naming Rules
+### Reglas de Nomenclatura de Archivos de Test
 
-| Pattern | Purpose | Examples |
+| Patrón | Propósito | Ejemplos |
 |---------|---------|----------|
-| `*.unit.test.ts` | Example-based unit tests | `order.calculate.unit.test.ts` |
-| `*.pbt.test.ts` | Property-based tests | `order.calculate.pbt.test.ts` |
+| `*.unit.test.ts` | Tests unitarios basados en ejemplos | `order.calculate.unit.test.ts` |
+| `*.pbt.test.ts` | Tests basados en propiedades | `order.calculate.pbt.test.ts` |
 
-### Function Naming Rules
+### Reglas de Nomenclatura de Funciones
 
-| Pattern | Purpose | Examples |
+| Patrón | Propósito | Ejemplos |
 |---------|---------|----------|
-| `make*` | Factory functions (MUST validate inputs) | `makeUser`, `makeOrder`, `makeId` |
-| `is*` | Type guards (MUST return type predicates) | `isUser`, `isOrder`, `isValidEmail` |
-| `*ToDTO` | Domain → DTO conversion | `userToDTO`, `orderToDTO` |
-| `*FromDTO` | DTO → Domain conversion | `userFromDTO`, `orderFromDTO` |
-| Operation names | Domain operations | `add`, `multiply`, `compare`, `merge` |
+| `make*` | Funciones factory (DEBEN validar inputs) | `makeUser`, `makeOrder`, `makeId` |
+| `is*` | Type guards (DEBEN devolver type predicates) | `isUser`, `isOrder`, `isValidEmail` |
+| `*ToDTO` | Conversión Domain → DTO | `userToDTO`, `orderToDTO` |
+| `*FromDTO` | Conversión DTO → Domain | `userFromDTO`, `orderFromDTO` |
+| Nombres de operaciones | Operaciones de dominio | `add`, `multiply`, `compare`, `merge` |
 
-### Type Naming Rules
+### Reglas de Nomenclatura de Tipos
 
-| Pattern | Purpose | Examples |
+| Patrón | Propósito | Ejemplos |
 |---------|---------|----------|
-| PascalCase | Domain types | `User`, `Order`, `EmailAddress`, `OrderId` |
-| `*DTO` suffix | Data Transfer Objects | `UserDTO`, `OrderDTO` |
-| `*Error` suffix | Error classes | `InvalidEmailError`, `OrderNotFoundError` |
+| PascalCase | Tipos de dominio | `User`, `Order`, `EmailAddress`, `OrderId` |
+| Sufijo `*DTO` | Data Transfer Objects | `UserDTO`, `OrderDTO` |
+| Sufijo `*Error` | Clases de error | `InvalidEmailError`, `OrderNotFoundError` |
 
 ---
 
-## 🏗️ Core Architectural Patterns
+## Patrones Arquitectónicos Core
 
-### 1. Branded Types with Phantom Types
+### 1. Branded Types con Phantom Types
 
-**Rule:** Use branded types to create **nominal types** from structural types for simple validated primitives.
+**Regla:** Usa branded types para crear **tipos nominales** a partir de tipos estructurales para primitivos validados simples.
 
-**When to use:** See "Choosing Between Branded Types and Discriminated Unions" below for detailed guidance.
+**Cuándo usar:** Consulta "Elegir entre Branded Types y Discriminated Unions" más abajo para orientación detallada.
 
-**Primary use cases:**
+**Casos de uso principales:**
 
-- Simple validated primitives (Currency codes, Email addresses, User IDs)
-- Types that need generic parameterization (e.g., `Currency<Code>`)
-- Performance-critical primitives with high volume
-- Thin wrappers around primitive values with no additional properties
+- Primitivos validados simples (códigos de moneda, direcciones de email, IDs de usuario)
+- Tipos que necesitan parametrización genérica (ej: `Currency<Code>`)
+- Primitivos críticos de rendimiento con alto volumen
+- Wrappers delgados alrededor de valores primitivos sin propiedades adicionales
 
-**Pattern:**
+**Patrón:**
 
 ```typescript
-// Define an unexported unique symbol for the brand
+// Define un símbolo único no exportado para la marca
 const EMAIL_SYMBOL: unique symbol = Symbol("Email");
 
-// Create branded type using intersection
+// Crea branded type usando intersección
 export type EmailAddress = string & {
   readonly [EMAIL_SYMBOL]: true
 };
 ```
 
-**Factory with Runtime Validation (REQUIRED):**
+**Factory con Validación en Runtime (OBLIGATORIO):**
 
 ```typescript
 export function makeEmail(raw: string): EmailAddress {
-    // 1. Normalize input
+    // 1. Normalizar input
     const normalized = raw.trim().toLowerCase();
 
-    // 2. Validate at runtime (REQUIRED - never skip validation)
+    // 2. Validar en runtime (OBLIGATORIO - nunca omitir validación)
     if (!isValidEmailFormat(normalized)) {
         throw new InvalidEmailError(raw, { reason: 'invalid format' });
     }
 
-    // 3. Cast to branded type ONLY after validation
+    // 3. Castear a branded type SOLO después de validación
     return normalized as EmailAddress;
 }
 ```
 
-**Benefits:**
+**Beneficios:**
 
-- Prevents accidental mixing of similar types (compile-time safety)
-- Forces validation through factory functions
-- No runtime overhead (erased at runtime)
-- Can still use as underlying type when needed with explicit casting
+- Previene mezcla accidental de tipos similares (seguridad en tiempo de compilación)
+- Fuerza validación a través de funciones factory
+- Sin overhead en runtime (borrado en runtime)
+- Se puede usar como tipo subyacente cuando sea necesario con casting explícito
 
 ---
 
-### 2. Discriminated Unions with `kind` Field
+### 2. Discriminated Unions con Campo `kind`
 
-**Rule:** Complex domain entities MUST use a **`kind` discriminator** for runtime type narrowing.
+**Regla:** Las entidades de dominio complejas DEBEN usar un **discriminador `kind`** para narrowing de tipos en runtime.
 
-**When to use:** See "Choosing Between Branded Types and Discriminated Unions" below for detailed guidance.
+**Cuándo usar:** Consulta "Elegir entre Branded Types y Discriminated Unions" más abajo para orientación detallada.
 
-**Primary use cases:**
+**Casos de uso principales:**
 
-- Domain entities with multiple properties (Money, Order, User)
-- Types with multiple variants/states needing exhaustive pattern matching
-- Rich objects requiring runtime introspection and debugging visibility
+- Entidades de dominio con múltiples propiedades (Money, Order, User)
+- Tipos con múltiples variantes/estados que necesitan pattern matching exhaustivo
+- Objetos ricos que requieren introspección en runtime y visibilidad de debugging
 
-**Pattern:**
+**Patrón:**
 
 ```typescript
-// Each variant MUST have a unique literal `kind` value
+// Cada variante DEBE tener un valor `kind` literal único
 export type Order = {
     readonly kind: "Order",
     readonly id: OrderId,
@@ -451,16 +449,16 @@ export type Draft = {
     readonly items: ReadonlyArray<OrderItem>
 };
 
-// Sum type (union) - can represent multiple states
+// Sum type (unión) - puede representar múltiples estados
 export type OrderState = Order | Draft;
 ```
 
-**Usage in Type Guards:**
+**Uso en Type Guards:**
 
 ```typescript
 export function isOrder(x: unknown): x is Order {
     return typeof x === "object" && x !== null
-        && (x as any).kind === "Order";  // Discriminator check
+        && (x as any).kind === "Order";  // Comprobación de discriminador
 }
 
 export function isDraft(x: unknown): x is Draft {
@@ -469,187 +467,50 @@ export function isDraft(x: unknown): x is Draft {
 }
 ```
 
-**Benefits:**
+**Beneficios:**
 
-- Enables exhaustive pattern matching
-- TypeScript can narrow types automatically
-- Clear runtime type identification
-- Makes illegal states unrepresentable
-
----
-
-### Choosing Between Branded Types and Discriminated Unions
-
-**Rule:** Use a **hybrid approach** - choose the pattern based on the complexity and characteristics of your domain type.
-
-#### Use Branded Types For: Simple Validated Primitives
-
-**When to use:**
-
-- Type is conceptually a primitive value (string, number) with validation constraints
-- No additional properties beyond the validated value
-- Needs to be parameterized with type information (e.g., `Currency<Code>`)
-- Performance-critical code with high volume of instances
-- Wants to leverage TypeScript's structural typing for the underlying primitive
-
-**Examples:**
-
-- `Currency<Code extends IsoCode>` - just a validated ISO code string
-- `EmailAddress` - just a validated email string
-- `UserId` - just a validated user ID string
-- `PositiveInteger` - just a number with constraints
-- `NonEmptyString` - just a string with validation
-
-**Key Characteristic:** These types are **thin wrappers around primitives** with no additional behavior or properties.
-
-```typescript
-// Branded type example
-const CURRENCY_SYMBOL: unique symbol = Symbol("Currency");
-export type Currency<Code extends IsoCode> = Code & {
-  readonly [CURRENCY_SYMBOL]: true
-};
-
-// Can be parameterized - preserves Code at type level
-export function makeMoney<Code extends IsoCode>(
-    amount: bigint,
-    currency: Currency<Code>
-): Money<Code> { ... }
-```
-
-#### Use Discriminated Unions For: Domain Entities
-
-**When to use:**
-
-- Type represents a domain entity with multiple properties
-- Has meaningful structure beyond a single value
-- May have multiple variants/states
-- Needs runtime introspection and debugging visibility
-- Benefits from consistent pattern across all domain types
-
-**Examples:**
-
-- `Money` - has amount, currency, and kind
-- `Order` - has id, items, total, status
-- `User` - has id, name, email, role
-- `Address` - has street, city, country
-- `MoneyBag` - collection of money amounts
-
-**Key Characteristic:** These types are **rich domain entities** with structure and behavior.
-
-```typescript
-// Discriminated union example
-export type Money = {
-    readonly kind: "Money",
-    readonly minor: bigint,
-    readonly currency: Currency<IsoCode>  // Uses branded type for the code
-};
-
-// Cannot be parameterized meaningfully
-export function makeMoney(
-    amount: bigint,
-    currency: Currency<IsoCode>
-): Money { ... }
-```
-
-#### Why Discriminated Unions Lose Generic Parameters
-
-When converting from branded type to discriminated union, you lose the ability to parameterize with specific type information. Here's why:
-
-**With Branded Types (Generic Parameter Preserved):**
-
-```typescript
-// Branded type - Code is preserved at TYPE level
-type Currency<Code extends IsoCode> = Code & { readonly [BRAND]: true };
-
-// Money can be parameterized with specific currency
-type Money<Code extends IsoCode> = {
-    readonly kind: "Money",
-    readonly minor: bigint,
-    readonly currency: Currency<Code>  // Type knows EXACTLY which code
-};
-
-// Factory preserves the Code type parameter
-function makeMoney<Code extends IsoCode>(
-    amount: bigint,
-    currency: Currency<Code>
-): Money<Code> {  // Returns Money<"USD"> if currency is Currency<"USD">
-    return { kind: "Money", minor: amount, currency };
-}
-
-// Usage - TypeScript KNOWS this is specifically USD Money
-const usdMoney: Money<"USD"> = makeMoney(100n, makeCurrency("USD"));
-```
-
-**With Discriminated Union (Generic Parameter Lost):**
-
-```typescript
-// Discriminated union - code is just a property VALUE
-type Currency = {
-    readonly kind: "Currency",
-    readonly code: IsoCode  // Just a property - type is the UNION of all codes
-};
-
-// Money cannot be meaningfully parameterized
-type Money = {
-    readonly kind: "Money",
-    readonly minor: bigint,
-    readonly currency: Currency  // Type only knows it's SOME currency
-};
-
-// Could try to add generic parameter, but it provides NO VALUE:
-type Money<Code extends IsoCode> = {
-    readonly kind: "Money",
-    readonly minor: bigint,
-    readonly currency: Currency  // currency.code is IsoCode, not Code!
-};
-// The Code parameter has no connection to currency.code at runtime
-
-// Factory cannot preserve specific code information
-function makeMoney(amount: bigint, currency: Currency): Money {
-    return { kind: "Money", minor: amount, currency };
-}
-
-// Usage - TypeScript only knows this is SOME Money, not specifically USD
-const someMoney: Money = makeMoney(100n, makeCurrency("USD"));
-// To check currency: someMoney.currency.code === "USD" (runtime check)
-```
-
-**The Core Issue:**
-
-- Branded types are **type-level annotations** on primitive values → Code stays in the type system
-- Discriminated unions are **runtime objects** with properties → code becomes a property value
-- Generic parameters need compile-time type information, but `currency.code` is just a runtime value
-
-**Trade-off:**
-
-- Branded types: Better type-level precision, worse runtime visibility
-- Discriminated unions: Better runtime visibility, lost type-level precision
-
-**Recommended Pattern:**
-
-For this architecture, use **branded types for primitives** (like Currency) and **discriminated unions for entities** (like Money). This gives you:
-
-- Type-level precision where it matters (`Money<"USD">` vs `Money<"EUR">`)
-- Runtime visibility for complex entities
-- Performance benefits of primitives where appropriate
-- Consistent pattern for entities
+- Habilita pattern matching exhaustivo
+- TypeScript puede estrechar tipos automáticamente
+- Identificación clara de tipos en runtime
+- Hace estados ilegales irrepresentables
 
 ---
 
-### 3. Factory Pattern (REQUIRED)
+### Elegir entre Branded Types y Discriminated Unions
 
-**Rule:** All domain objects MUST be created through factory functions, NEVER through direct object literals.
+**Regla:** Usa un **enfoque híbrido**:
 
-**Rule:** All factories MUST perform runtime validation before creating objects.
+**Branded Types** → Primitivos validados simples (Currency, EmailAddress, UserId)
 
-**Basic Factory:**
+- Wrappers delgados alrededor de primitivos con validación
+- Pueden ser parametrizados con información de tipo
+- Instancias de alto volumen, críticas de rendimiento
+- Ejemplo: `Currency<Code extends IsoCode>`
+
+**Discriminated Unions** → Entidades de dominio con múltiples propiedades
+
+- Objetos ricos con estructura y comportamiento
+- Introspección en runtime y visibilidad de debugging
+- Ejemplo: `Money`, `Order`, `User`
+
+**Trade-off:** Los branded types preservan parámetros genéricos a nivel de tipo, las discriminated unions proporcionan visibilidad en runtime pero pierden precisión a nivel de tipo.
+
+---
+
+### 3. Patrón Factory (OBLIGATORIO)
+
+**Regla:** Todos los objetos de dominio DEBEN crearse mediante funciones factory, NUNCA mediante object literals directos.
+
+**Regla:** Todas las factories DEBEN realizar validación en runtime antes de crear objetos.
+
+**Factory Básica:**
 
 ```typescript
 export function makeOrder(
     id: OrderId,
     items: ReadonlyArray<OrderItem>
 ): Order {
-    // 1. VALIDATE ALL INPUTS (REQUIRED)
+    // 1. VALIDAR TODOS LOS INPUTS (OBLIGATORIO)
     if (!isOrderId(id)) {
         throw new InvalidOrderError(id, { field: 'id', expectedType: 'OrderId' });
     }
@@ -660,76 +521,45 @@ export function makeOrder(
         throw new InvalidOrderError(items, { field: 'items', reason: 'contains invalid items' });
     }
 
-    // 2. Calculate derived values
+    // 2. Calcular valores derivados
     const total = calculateTotal(items);
 
-    // 3. Return immutable object
+    // 3. Devolver objeto inmutable
     return {
         kind: "Order",
         id,
-        items: Object.freeze([...items]), // Defensive copy + freeze
+        items: Object.freeze([...items]), // Copia defensiva + freeze
         total
     };
 }
 ```
 
-**Convenience Factories:**
+**Factories de Conveniencia:**
 
 ```typescript
-// Provide domain-specific shortcuts
 export const emptyOrder = (id: OrderId) => makeOrder(id, []);
-export const singleItemOrder = (id: OrderId, item: OrderItem) => makeOrder(id, [item]);
-```
-
-**Identity/Special Value Factories:**
-
-```typescript
-// For mathematical operations
 export const zero = <T extends Unit>(unit: T) => makeQuantity(0, unit);
-export const one = <T extends Unit>(unit: T) => makeQuantity(1, unit);
-```
-
-**Factory with Dependency Injection (Advanced):**
-
-```typescript
-// Type for the created function
-export type Repository<T> = {
-    find: (id: string) => Promise<T | undefined>;
-    save: (entity: T) => Promise<void>;
-};
-
-// Factory creates repository with injected storage
-export function makeRepository<T>(storage: Storage): Repository<T> {
-    return {
-        async find(id: string): Promise<T | undefined> {
-            return await storage.get(id);
-        },
-        async save(entity: T): Promise<void> {
-            await storage.set(entity.id, entity);
-        }
-    };
-}
 ```
 
 ---
 
-### 4. Guard Functions (Type Predicates)
+### 4. Funciones Guard (Type Predicates)
 
-**Rule:** Every domain type MUST have a corresponding guard function for runtime validation.
+**Regla:** Cada tipo de dominio DEBE tener una función guard correspondiente para validación en runtime.
 
-**Pattern:**
+**Patrón:**
 
 ```typescript
 export function isOrder(x: unknown): x is Order {
-    // 1. Check object structure
+    // 1. Comprobar estructura de objeto
     if (typeof x !== "object" || x === null) return false;
 
     const obj = x as any;
 
-    // 2. Check discriminator (if using discriminated unions)
+    // 2. Comprobar discriminador (si se usan discriminated unions)
     if (obj.kind !== "Order") return false;
 
-    // 3. Validate all required fields
+    // 3. Validar todos los campos requeridos
     if (!isOrderId(obj.id)) return false;
     if (!Array.isArray(obj.items)) return false;
     if (!obj.items.every(isOrderItem)) return false;
@@ -739,7 +569,7 @@ export function isOrder(x: unknown): x is Order {
 }
 ```
 
-**Guard for Primitive Types:**
+**Guard para Tipos Primitivos:**
 
 ```typescript
 export function isFiniteNumber(x: unknown): x is number {
@@ -751,7 +581,7 @@ export function isPositiveInteger(x: unknown): x is number {
 }
 ```
 
-**Composing Guards:**
+**Componiendo Guards:**
 
 ```typescript
 export function isNonEmptyArray<T>(
@@ -764,41 +594,41 @@ export function isNonEmptyArray<T>(
 
 ---
 
-### 5. DTO Pattern
+### 5. Patrón DTO
 
-**Rule:** Separate domain objects (optimized for business logic) from DTOs (optimized for serialization/persistence).
+**Regla:** Separa objetos de dominio (optimizados para lógica de negocio) de DTOs (optimizados para serialización/persistencia).
 
-**When to use:**
+**Cuándo usar:**
 
-- Persisting to databases
-- Sending over network/APIs
-- Types contain bigint, Date, or other non-JSON types
-- Need different structure for external vs internal representation
+- Persistir en bases de datos
+- Enviar por red/APIs
+- Los tipos contienen bigint, Date, u otros tipos no-JSON
+- Necesitas estructura diferente para representación externa vs interna
 
-**Domain Type:**
+**Tipo de Dominio:**
 
 ```typescript
 export type Money = {
     readonly kind: "Money",
-    readonly amount: bigint,           // Runtime type: bigint (not JSON-serializable)
+    readonly amount: bigint,           // Tipo runtime: bigint (no serializable a JSON)
     readonly currency: CurrencyCode
 };
 ```
 
-**DTO Type:**
+**Tipo DTO:**
 
 ```typescript
 export type MoneyDTO = {
     kind: "Money",
-    amount: string,                     // Serialized bigint
-    currency: string                    // Plain string, not branded
+    amount: string,                     // bigint serializado
+    currency: string                    // String plano, no branded
 };
 ```
 
-**Conversion Functions:**
+**Funciones de Conversión:**
 
 ```typescript
-// Domain → DTO (for persistence/API responses)
+// Domain → DTO (para persistencia/respuestas API)
 export function moneyToDTO(m: Money): MoneyDTO {
     return {
         kind: "Money",
@@ -807,14 +637,14 @@ export function moneyToDTO(m: Money): MoneyDTO {
     };
 }
 
-// DTO → Domain (from persistence/API requests) - MUST validate
+// DTO → Domain (desde persistencia/peticiones API) - DEBE validar
 export function moneyFromDTO(dto: MoneyDTO): Money {
     if (dto.kind !== "Money") {
         throw new InvalidMoneyError(dto, { reason: 'wrong kind' });
     }
 
-    const amount = BigInt(dto.amount);  // May throw if invalid
-    const currency = makeCurrencyCode(dto.currency);  // Validates
+    const amount = BigInt(dto.amount);  // Puede lanzar si es inválido
+    const currency = makeCurrencyCode(dto.currency);  // Valida
 
     return { kind: "Money", amount, currency };
 }
@@ -822,11 +652,11 @@ export function moneyFromDTO(dto: MoneyDTO): Money {
 
 ---
 
-### 6. Error Handling
+### 6. Gestión de Errores
 
-**Rule:** All domain errors MUST extend a base `AppError` class with structured metadata.
+**Regla:** Todos los errores de dominio DEBEN extender una clase base `AppError` con metadatos estructurados.
 
-**Base Error Class:**
+**Clase Base de Error:**
 
 ```typescript
 export type UserInfo = Record<string, unknown>;
@@ -835,7 +665,7 @@ export class AppError extends Error {
     constructor(
         message: string,
         public readonly userInfo?: UserInfo,
-        previous?: Error    // Error chaining
+        previous?: Error    // Encadenamiento de errores
     ) {
         super(message, { cause: previous });
         this.name = new.target.name;
@@ -855,7 +685,7 @@ export class AppError extends Error {
 }
 ```
 
-**Domain-Specific Errors:**
+**Errores Específicos de Dominio:**
 
 ```typescript
 export class InvalidOrderError extends AppError {
@@ -872,12 +702,12 @@ export class OrderNotFoundError extends AppError {
 }
 ```
 
-**Error Throwing in Factories:**
+**Lanzamiento de Errores en Factories:**
 
 ```typescript
 export function makeOrder(id: OrderId, items: ReadonlyArray<OrderItem>): Order {
     if (!isOrderId(id)) {
-        // Include context in userInfo
+        // Incluir contexto en userInfo
         throw new InvalidOrderError(id, {
             field: 'id',
             expectedType: 'OrderId',
@@ -885,7 +715,7 @@ export function makeOrder(id: OrderId, items: ReadonlyArray<OrderItem>): Order {
         });
     }
 
-    // Chain errors when catching and re-throwing
+    // Encadenar errores al capturar y relanzar
     try {
         const total = calculateTotal(items);
         return { kind: "Order", id, items, total };
@@ -897,26 +727,26 @@ export function makeOrder(id: OrderId, items: ReadonlyArray<OrderItem>): Order {
 
 ---
 
-### 7. Polymorphic Operations
+### 7. Operaciones Polimórficas
 
-**Rule:** Use function overloads for type-safe polymorphic operations.
+**Regla:** Usa function overloads para operaciones polimórficas type-safe.
 
-**Pattern:**
+**Patrón:**
 
 ```typescript
-// Overload 1: Strong type when types match at compile-time
+// Overload 1: Tipo fuerte cuando los tipos coinciden en tiempo de compilación
 export function combine<T extends Entity>(left: T, right: T): T;
 
-// Overload 2: Runtime-friendly combinations
+// Overload 2: Combinaciones amigables con runtime
 export function combine(left: Entity, right: unknown): Entity;
 export function combine(left: unknown, right: Entity): Entity;
 
-// Overload 3: Generic fallback
+// Overload 3: Fallback genérico
 export function combine(left: unknown, right: unknown): Entity;
 
-// Single implementation
+// Implementación única
 export function combine(left: unknown, right: unknown): Entity {
-    // Runtime dispatch based on type guards
+    // Dispatch en runtime basado en type guards
     if (isOrder(left) && isOrder(right)) {
         return combineOrders(left, right);
     }
@@ -927,11 +757,11 @@ export function combine(left: unknown, right: unknown): Entity {
 }
 ```
 
-**Polymorphic Dispatch:**
+**Dispatch Polimórfico:**
 
 ```typescript
 export function process(state: OrderState): ProcessedState {
-    // TypeScript narrows types based on discriminator
+    // TypeScript estrecha tipos basándose en el discriminador
     if (isOrder(state)) {
         return processOrder(state);
     }
@@ -939,7 +769,7 @@ export function process(state: OrderState): ProcessedState {
         return processDraft(state);
     }
 
-    // Exhaustiveness check - TypeScript will error if new variants added
+    // Comprobación de exhaustividad - TypeScript dará error si se añaden nuevas variantes
     const exhaustive: never = state;
     throw new Error(`Unhandled state: ${exhaustive}`);
 }
@@ -947,203 +777,78 @@ export function process(state: OrderState): ProcessedState {
 
 ---
 
-### 8. Equality Operations
+### 8. Operaciones de Igualdad
 
-**Rule:** Every domain type MUST implement an `isEqual` operation for value-based comparison.
+**Regla:** Cada tipo de dominio DEBE implementar una operación `isEqual` para comparación basada en valor.
 
-**Why:** JavaScript's `===` only checks reference equality for objects. Domain objects need value-based equality to properly compare instances.
+**Por qué:** El `===` de JavaScript solo comprueba igualdad por referencia para objetos. Los objetos de dominio necesitan igualdad basada en valor para comparar instancias correctamente.
 
-#### Equality for Branded Types (Primitives)
+#### Patrones de Igualdad
 
-Branded types wrap primitives, so use **reference equality** for the underlying value:
+**Branded Types (Primitivos):**
 
 ```typescript
-// Currency is a branded string
 export function isEqual(left: unknown, right: unknown): boolean {
-    // 1. Fast path: same reference
     if (left === right) return true;
-
-    // 2. Validate both are the correct type
     if (!isCurrency(left) || !isCurrency(right)) return false;
-
-    // 3. Compare underlying primitive values (works because branded types are erased at runtime)
-    return left === right;
+    return left === right;  // Los primitivos usan igualdad por referencia
 }
 ```
 
-**Key Points:**
-
-- Branded types are erased at runtime → they're just primitives
-- Reference equality `===` works for strings, numbers
-- Fast and efficient
-
-#### Equality for Discriminated Unions (Objects)
-
-Domain entities need **structural equality** - compare all significant properties:
+**Discriminated Unions (Objetos):**
 
 ```typescript
-// Money is a discriminated union with properties
 export function isEqual(left: unknown, right: unknown): boolean {
-    // 1. Fast path: same reference
     if (left === right) return true;
-
-    // 2. Validate both are Money
     if (!isMoney(left) || !isMoney(right)) return false;
-
-    // 3. Compare all significant properties
-    return left.minor === right.minor
-        && left.currency === right.currency;
-    // Note: Don't compare 'kind' - already validated by type guard
+    return left.minor === right.minor && left.currency === right.currency;
 }
 ```
 
-**Key Points:**
-
-- Two different objects with same values should be equal
-- Compare all properties that define identity
-- Use `===` for primitives, call `isEqual` for nested objects
-- Skip comparing `kind` discriminator (already checked by guard)
-
-#### Equality for Collections/Bags
-
-Collections need **set-like equality** - same elements in any order:
+**Colecciones (igualdad de multiset):**
 
 ```typescript
 export function isEqualBag(left: MoneyBag, right: MoneyBag): boolean {
-    // 1. Fast check: different sizes → not equal
     if (left.amounts.length !== right.amounts.length) return false;
-
-    // 2. Count occurrences of each element in left
     const counts = new Map<string, number>();
     for (const money of left.amounts) {
-        // Create unique key for this money instance
-        const key = `${money.currency}|${money.minor.toString()}`;
+        const key = `${money.currency}|${money.minor}`;
         counts.set(key, (counts.get(key) ?? 0) + 1);
     }
-
-    // 3. Decrement counts for elements in right
     for (const money of right.amounts) {
-        const key = `${money.currency}|${money.minor.toString()}`;
+        const key = `${money.currency}|${money.minor}`;
         const current = counts.get(key);
-
-        // Not found → bags are different
-        if (current === undefined) return false;
-
-        // Decrement or remove
-        if (current === 1) {
-            counts.delete(key);
-        } else {
-            counts.set(key, current - 1);
-        }
+        if (!current) return false;
+        current === 1 ? counts.delete(key) : counts.set(key, current - 1);
     }
-
-    // 4. All counts should be zero (map should be empty)
     return counts.size === 0;
 }
 ```
 
-**Key Points:**
+#### Testear Relaciones de Equivalencia
 
-- Use counting approach for multiset equality
-- Create serializable keys for elements
-- Handle duplicates correctly
-- Order doesn't matter
+Cada implementación de `isEqual` DEBE satisfacer estas propiedades matemáticas:
 
-#### Polymorphic Equality with Overloads
-
-Use function overloads for type-safe polymorphic equality:
-
-```typescript
-// Overload 1: Strong type guarantee when both are same type
-export function isEqual<T extends Entity>(left: T, right: T): boolean;
-
-// Overload 2: Runtime-friendly combinations
-export function isEqual(left: Entity, right: unknown): boolean;
-export function isEqual(left: unknown, right: Entity): boolean;
-
-// Overload 3: Generic fallback
-export function isEqual(left: unknown, right: unknown): boolean;
-
-// Single implementation with runtime dispatch
-export function isEqual(left: unknown, right: unknown): boolean {
-    // Use type guards to dispatch to specific implementations
-    if (isMoney(left) && isMoney(right)) {
-        return isEqualMoney(left, right);
-    }
-
-    if (isMoneyBag(left) && isMoneyBag(right)) {
-        return isEqualBag(left, right);
-    }
-
-    // Different types → not equal
-    return false;
-}
-```
-
-#### Common Patterns
-
-**1. Reference Equality Fast Path:**
-
-Always start with reference check - two references to same object are always equal:
-
-```typescript
-if (left === right) return true;  // Same object or same primitive value
-```
-
-**2. Type Validation:**
-
-Validate both operands before comparing properties:
-
-```typescript
-if (!isOrder(left) || !isOrder(right)) return false;
-```
-
-**3. Property Comparison:**
-
-For objects, compare all identity-defining properties:
-
-```typescript
-return left.id === right.id           // Primitive comparison
-    && isEqual(left.user, right.user)  // Nested object comparison
-    && arraysEqual(left.items, right.items);  // Array comparison
-```
-
-**4. Nested Equality:**
-
-For nested objects, recursively call their equality functions:
-
-```typescript
-export function isEqual(left: Order, right: Order): boolean {
-    return left.id === right.id
-        && isEqual(left.customer, right.customer)  // Uses Customer's isEqual
-        && left.items.every((item, i) => isEqual(item, right.items[i]));
-}
-```
-
-#### Testing Equivalence Relations
-
-Every `isEqual` implementation MUST satisfy these mathematical properties:
-
-**Property-Based Tests:**
+**Tests Basados en Propiedades:**
 
 ```typescript
 import fc from "fast-check";
 
-// Reflexivity: x = x
+// Reflexividad: x = x
 test("isEqual is reflexive", () =>
     fc.assert(fc.property(arbitraryMoney, (x) => {
         expect(isEqual(x, x)).toBe(true);
     }))
 );
 
-// Symmetry: x = y ⟺ y = x
+// Simetría: x = y ⟺ y = x
 test("isEqual is symmetric", () =>
     fc.assert(fc.property(arbitraryMoney, arbitraryMoney, (x, y) => {
         expect(isEqual(x, y)).toBe(isEqual(y, x));
     }))
 );
 
-// Transitivity: x = y ∧ y = z ⟹ x = z
+// Transitividad: x = y ∧ y = z ⟹ x = z
 test("isEqual is transitive", () =>
     fc.assert(fc.property(arbitraryMoney, arbitraryMoney, arbitraryMoney, (x, y, z) => {
         if (isEqual(x, y) && isEqual(y, z)) {
@@ -1153,19 +858,19 @@ test("isEqual is transitive", () =>
 );
 ```
 
-**Unit Tests:**
+**Tests Unitarios:**
 
 ```typescript
-test("equal values from different factories are equal", () => {
+test("valores iguales de diferentes factories son iguales", () => {
     const a = makeMoney(100n, makeCurrency("USD"));
     const b = makeMoney(100n, makeCurrency("USD"));
 
-    // Different objects, same values
-    expect(a).not.toBe(b);  // Reference inequality
-    expect(isEqual(a, b)).toBe(true);  // Value equality
+    // Objetos diferentes, mismos valores
+    expect(a).not.toBe(b);  // Desigualdad por referencia
+    expect(isEqual(a, b)).toBe(true);  // Igualdad por valor
 });
 
-test("different values are not equal", () => {
+test("valores diferentes no son iguales", () => {
     const a = makeMoney(100n, makeCurrency("USD"));
     const b = makeMoney(200n, makeCurrency("USD"));
 
@@ -1175,11 +880,11 @@ test("different values are not equal", () => {
 
 ---
 
-### 9. Immutability Patterns
+### 9. Patrones de Inmutabilidad
 
-**Rule:** All data structures MUST be readonly and immutable.
+**Regla:** Todas las estructuras de datos DEBEN ser readonly e inmutables.
 
-**Readonly Types:**
+**Tipos Readonly:**
 
 ```typescript
 export type Order = Readonly<{
@@ -1189,7 +894,7 @@ export type Order = Readonly<{
     total: Money
 }>;
 
-// Or use readonly modifiers
+// O usa modificadores readonly
 export type Order = {
     readonly kind: "Order",
     readonly id: OrderId,
@@ -1198,53 +903,53 @@ export type Order = {
 };
 ```
 
-**Defensive Copying in Factories:**
+**Copiado Defensivo en Factories:**
 
 ```typescript
 export function makeOrder(
     id: OrderId,
     items: ReadonlyArray<OrderItem>
 ): Order {
-    // Defensive copy to avoid sharing mutable references
+    // Copia defensiva para evitar compartir referencias mutables
     const itemsCopy: OrderItem[] = items.slice();
 
     return {
         kind: "Order",
         id,
-        items: Object.freeze(itemsCopy),  // Runtime immutability
+        items: Object.freeze(itemsCopy),  // Inmutabilidad en runtime
         total: calculateTotal(itemsCopy)
     };
 }
 ```
 
-**Update Operations Return New Instances:**
+**Operaciones de Actualización Devuelven Nuevas Instancias:**
 
 ```typescript
 export function addItem(order: Order, item: OrderItem): Order {
-    // Never mutate - create new instance via factory
+    // Nunca mutar - crear nueva instancia mediante factory
     return makeOrder(order.id, [...order.items, item]);
 }
 ```
 
 ---
 
-## 🧪 Testing Strategy
+## Estrategia de Testing
 
-### Two-Tier Testing Approach (REQUIRED)
+### Enfoque de Testing de Dos Niveles (OBLIGATORIO)
 
-Every domain feature MUST have both:
+Cada funcionalidad de dominio DEBE tener ambos:
 
-1. **Unit Tests** (`test/unit/`): Example-based tests for specific scenarios
-2. **Property-Based Tests** (`test/pbt/`): Generative testing for invariants using `fast-check`
+1. **Tests Unitarios** (`test/unit/`): Tests basados en ejemplos para escenarios específicos
+2. **Tests Basados en Propiedades** (`test/pbt/`): Testing generativo para invariantes usando `fast-check`
 
-### Unit Test Structure
+### Estructura de Test Unitario
 
 ```typescript
 import { describe, test, expect } from "vitest";
 import { makeOrder, makeOrderItem } from "../../src/order/order.make.js";
 
 describe("Order.addItem (unit)", () => {
-    test("adds item and recalculates total", () => {
+    test("añade item y recalcula total", () => {
         const order = makeOrder(makeOrderId("1"), []);
         const item = makeOrderItem("Widget", 100n);
 
@@ -1254,7 +959,7 @@ describe("Order.addItem (unit)", () => {
         expect(updated.total.amount).toBe(100n);
     });
 
-    test("immutability: original order unchanged", () => {
+    test("inmutabilidad: order original sin cambios", () => {
         const order = makeOrder(makeOrderId("1"), []);
         const item = makeOrderItem("Widget", 100n);
         const before = { ...order };
@@ -1265,7 +970,7 @@ describe("Order.addItem (unit)", () => {
         expect(updated).not.toBe(order);
     });
 
-    test("throws on invalid item", () => {
+    test("lanza error en item inválido", () => {
         const order = makeOrder(makeOrderId("1"), []);
 
         expect(() => addItem(order, null as any)).toThrow(InvalidOrderItemError);
@@ -1273,72 +978,35 @@ describe("Order.addItem (unit)", () => {
 });
 ```
 
-### Property-Based Test Structure
-
-Test **algebraic properties** and **domain invariants**:
+### Estructura de Test Basado en Propiedades
 
 ```typescript
 import fc from "fast-check";
-import { test, expect } from "vitest";
 
-// Define arbitraries for your domain
 const arbitraryAmount = fc.bigInt({ min: 0n, max: 1_000_000n });
-const arbitraryItem = fc.record({
-    name: fc.string({ minLength: 1 }),
-    price: arbitraryAmount,
-});
+const arbitraryItem = fc.record({ name: fc.string({ minLength: 1 }), price: arbitraryAmount });
 
-// Test algebraic properties
-test("addItem is associative", () =>
-    fc.assert(
-        fc.property(arbitraryItem, arbitraryItem, arbitraryItem, (a, b, c) => {
-            const order = emptyOrder(makeOrderId("1"));
-            const left = addItem(addItem(addItem(order, a), b), c);
-            const right = addItem(addItem(addItem(order, a), b), c);
-            expect(left).toEqual(right);
-        })
-    )
-);
-
-// Test domain invariants
-test("order total always equals sum of item prices", () =>
-    fc.assert(
-        fc.property(fc.array(arbitraryItem, { minLength: 1 }), (items) => {
-            const order = makeOrder(makeOrderId("1"), items);
-            const expectedTotal = items.reduce((sum, item) => sum + item.price, 0n);
-            expect(order.total.amount).toBe(expectedTotal);
-        })
-    )
+// Testear propiedades algebraicas
+test("total del order equivale a suma de precios de items", () =>
+    fc.assert(fc.property(fc.array(arbitraryItem, { minLength: 1 }), (items) => {
+        const order = makeOrder(makeOrderId("1"), items);
+        const expectedTotal = items.reduce((sum, item) => sum + item.price, 0n);
+        expect(order.total.amount).toBe(expectedTotal);
+    }))
 );
 ```
 
-### Properties to Test (Checklist)
+### Checklist de Tests
 
-**Equivalence Relations (for `isEqual` operations):**
-
-- [ ] Reflexivity: `isEqual(a, a) === true`
-- [ ] Symmetry: `isEqual(a, b) === isEqual(b, a)`
-- [ ] Transitivity: if `a=b` and `b=c` then `a=c`
-
-**Algebraic Properties (for operations):**
-
-- [ ] Commutativity: `op(a, b) === op(b, a)` (if applicable)
-- [ ] Associativity: `op(op(a, b), c) === op(a, op(b, c))` (if applicable)
-- [ ] Identity: `op(x, identity) === x` (if applicable)
-
-**Domain Invariants (ALWAYS test):**
-
-- [ ] Closure: factory output satisfies guard predicates
-- [ ] Immutability: objects don't mutate after creation
-- [ ] Type safety: all properties maintain valid types
-- [ ] Determinism: same inputs → same outputs
-- [ ] Guard/Factory consistency: `is*(make*(...)) === true`
+**Relaciones de Equivalencia:** Reflexividad, Simetría, Transitividad
+**Propiedades Algebraicas:** Conmutatividad, Asociatividad, Identidad (si aplica)
+**Invariantes de Dominio:** Closure, Inmutabilidad, Type safety, Determinismo, Consistencia Guard/Factory
 
 ---
 
-## ⚙️ TypeScript & Build Configuration
+## Configuración de TypeScript y Build
 
-### tsconfig.json (REQUIRED settings)
+### tsconfig.json (configuración OBLIGATORIA)
 
 ```json
 {
@@ -1357,7 +1025,7 @@ test("order total always equals sum of item prices", () =>
 }
 ```
 
-### package.json (recommended scripts)
+### package.json (scripts recomendados)
 
 ```json
 {
@@ -1376,7 +1044,7 @@ test("order total always equals sum of item prices", () =>
 }
 ```
 
-### vitest.config.ts (recommended configuration)
+### vitest.config.ts (configuración recomendada)
 
 ```typescript
 import { defineConfig } from "vitest/config";
@@ -1389,8 +1057,8 @@ export default defineConfig({
       all: true,
       include: ["src/**/*.ts"],
       exclude: [
-        "src/**/*.types.ts",   // Pure types: no runtime code
-        "src/**/index.ts",     // Barrel files
+        "src/**/*.types.ts",   // Tipos puros: sin código runtime
+        "src/**/index.ts",     // Archivos barrel
         "test/**",
       ],
     },
@@ -1400,160 +1068,132 @@ export default defineConfig({
 
 ---
 
-## 📋 Important Conventions
+## Convenciones Importantes
 
-### ES Modules (REQUIRED)
+### ES Modules (OBLIGATORIO)
 
-- Project MUST use `"type": "module"` in package.json
-- All imports MUST include `.js` extensions even for `.ts` files
-- Example: `import { User } from "./user.types.js";`
+- El proyecto DEBE usar `"type": "module"` en package.json
+- Todos los imports DEBEN incluir extensiones `.js` incluso para archivos `.ts`
+- Ejemplo: `import { User } from "./user.types.js";`
 
-### Numeric Precision (for financial/precise calculations)
+### Precisión Numérica (para cálculos financieros/precisos)
 
-- Use `bigint` for precise integer arithmetic (money, quantities)
-- Never use `number` or floating point for financial calculations
-- Literal syntax: `42n` (note the `n` suffix)
-- WARNING: `1 !== 1n` in JavaScript
+- Usa `bigint` para aritmética entera precisa (dinero, cantidades)
+- Nunca uses `number` o punto flotante para cálculos financieros
+- Sintaxis literal: `42n` (nota el sufijo `n`)
+- ADVERTENCIA: `1 !== 1n` en JavaScript
 
-### Immutability (REQUIRED)
+### Inmutabilidad (OBLIGATORIO)
 
-- All domain objects MUST be `readonly`
-- Use `ReadonlyArray<T>` for arrays
-- Use `Readonly<{...}>` for object types
-- Make defensive copies in factory functions
-- Operations MUST return new instances, never mutate
+- Todos los objetos de dominio DEBEN ser `readonly`
+- Usa `ReadonlyArray<T>` para arrays
+- Usa `Readonly<{...}>` para tipos de objeto
+- Haz copias defensivas en funciones factory
+- Las operaciones DEBEN devolver nuevas instancias, nunca mutar
 
-### Normalization (RECOMMENDED)
+### Normalización (RECOMENDADO)
 
-- Normalize input data before validation
-- Common normalizations: trim, lowercase, uppercase
-- Apply consistently across all factories
+- Normaliza datos de input antes de validación
+- Normalizaciones comunes: trim, lowercase, uppercase
+- Aplica consistentemente en todas las factories
 
-### Type Checking in Tests
+### Type Checking en Tests
 
-- All test commands SHOULD run typecheck before executing
-- Use `pnpm test:only` to skip typechecking (faster iteration during development)
+- Todos los comandos de test DEBERÍAN ejecutar typecheck antes de ejecutarse
+- Usa `pnpm test:only` para omitir typechecking (iteración más rápida durante desarrollo)
 
 ---
 
-## 🆕 Adding a New Domain Feature
+## Añadir una Nueva Funcionalidad de Dominio
 
-When adding a new feature, follow this checklist:
+Al añadir una nueva funcionalidad, sigue este checklist:
 
-### 1. Create Domain Files
+### 1. Crear Archivos de Dominio
 
 ```text
 src/<domain>/
-├── <domain>.types.ts      # Define types first
-├── <domain>.make.ts       # Factory functions
+├── <domain>.types.ts      # Define tipos primero
+├── <domain>.make.ts       # Funciones factory
 ├── <domain>.guard.ts      # Type guards
-├── <domain>.ops.ts        # Operations
-├── <domain>.errors.ts     # Custom errors
-└── <domain>.dto.*.ts      # DTOs if needed for persistence
+├── <domain>.ops.ts        # Operaciones
+├── <domain>.errors.ts     # Errores personalizados
+└── <domain>.dto.*.ts      # DTOs si se necesitan para persistencia
 ```
 
-### 2. Define Types (`*.types.ts`)
+### 2. Definir Tipos (`*.types.ts`)
 
-- [ ] Use discriminated union with `kind` field
-- [ ] Make all fields `readonly`
-- [ ] Use branded types if nominal typing needed
-- [ ] Define sum types if multiple variants exist
+- [ ] Usar discriminated union con campo `kind`
+- [ ] Hacer todos los campos `readonly`
+- [ ] Usar branded types si se necesita tipado nominal
+- [ ] Definir sum types si existen múltiples variantes
 
-### 3. Create Factory (`*.make.ts`)
+### 3. Crear Factory (`*.make.ts`)
 
-- [ ] VALIDATE all inputs using type guards
-- [ ] Throw descriptive errors on invalid input
-- [ ] Cast to branded type ONLY after validation
-- [ ] Create convenience factories for common cases
-- [ ] Make defensive copies of mutable inputs
-- [ ] Use `Object.freeze()` for runtime immutability
+- [ ] VALIDAR todos los inputs usando type guards
+- [ ] Lanzar errores descriptivos en input inválido
+- [ ] Castear a branded type SOLO después de validación
+- [ ] Crear factories de conveniencia para casos comunes
+- [ ] Hacer copias defensivas de inputs mutables
+- [ ] Usar `Object.freeze()` para inmutabilidad en runtime
 
-### 4. Add Guards (`*.guard.ts`)
+### 4. Añadir Guards (`*.guard.ts`)
 
-- [ ] Use type predicate return type (`x is Type`)
-- [ ] Check `kind` discriminator first (if using discriminated unions)
-- [ ] Validate ALL required fields
-- [ ] Compose with existing guards
-- [ ] Test with property-based tests that `is*(make*(...)) === true`
+- [ ] Usar tipo de retorno type predicate (`x is Type`)
+- [ ] Comprobar discriminador `kind` primero (si se usan discriminated unions)
+- [ ] Validar TODOS los campos requeridos
+- [ ] Componer con guards existentes
+- [ ] Testear con property-based tests que `is*(make*(...)) === true`
 
-### 5. Implement Operations (`*.ops.ts`)
+### 5. Implementar Operaciones (`*.ops.ts`)
 
-- [ ] Define type-safe overloads for polymorphic operations
-- [ ] Implement polymorphic dispatch if needed
-- [ ] Ensure immutability (NEVER mutate)
-- [ ] Return new instances via factories
-- [ ] Validate inputs using guards
+- [ ] Definir overloads type-safe para operaciones polimórficas
+- [ ] Implementar dispatch polimórfico si se necesita
+- [ ] Asegurar inmutabilidad (NUNCA mutar)
+- [ ] Devolver nuevas instancias mediante factories
+- [ ] Validar inputs usando guards
 
-### 6. Define Errors (`*.errors.ts`)
+### 6. Definir Errores (`*.errors.ts`)
 
-- [ ] Extend `AppError` base class
-- [ ] Include meaningful `userInfo` metadata
-- [ ] Support error chaining via `previous` parameter
-- [ ] Provide helpful error messages
+- [ ] Extender clase base `AppError`
+- [ ] Incluir metadatos `userInfo` significativos
+- [ ] Soportar encadenamiento de errores mediante parámetro `previous`
+- [ ] Proporcionar mensajes de error útiles
 
-### 7. Write Tests
+### 7. Escribir Tests
 
-**Unit tests** (`test/unit/<domain>.<feature>.unit.test.ts`):
+**Tests unitarios** (`test/unit/<domain>.<feature>.unit.test.ts`):
 
-- [ ] Test happy paths with examples
-- [ ] Test error conditions
-- [ ] Test immutability
-- [ ] Test edge cases
+- [ ] Testear caminos felices con ejemplos
+- [ ] Testear condiciones de error
+- [ ] Testear inmutabilidad
+- [ ] Testear casos extremos
 
-**Property-based tests** (`test/pbt/<domain>.<feature>.pbt.test.ts`):
+**Tests basados en propiedades** (`test/pbt/<domain>.<feature>.pbt.test.ts`):
 
-- [ ] Test algebraic properties (if applicable)
-- [ ] Test equivalence relations
-- [ ] Test domain invariants
-- [ ] Test determinism
-- [ ] Test guard/factory consistency
+- [ ] Testear propiedades algebraicas (si aplica)
+- [ ] Testear relaciones de equivalencia
+- [ ] Testear invariantes de dominio
+- [ ] Testear determinismo
+- [ ] Testear consistencia guard/factory
 
-### 8. Update Exports (if using barrel files)
+### 8. Actualizar Exports (si se usan barrel files)
 
-- [ ] Export types from `*.types.ts`
-- [ ] Export factories from `*.make.ts`
-- [ ] Export guards from `*.guard.ts`
-- [ ] Export operations from `*.ops.ts`
-
----
-
-## 🎯 Summary of Key Principles
-
-1. **Hybrid Type Strategy**: Use branded types for simple validated primitives (Currency, EmailAddress, UserId) and discriminated unions for complex domain entities (Money, Order, User)
-2. **Runtime Validation**: All factories MUST validate inputs before creating objects
-3. **Immutability Everywhere**: All data structures are readonly and never mutated
-4. **Factory Pattern**: All objects created through validated factory functions
-5. **Type Narrowing**: Use `kind` discriminator for entities, branded types preserve generic parameters for primitives
-6. **Guard Functions**: Runtime validation with type predicates for every domain type
-7. **Structured Errors**: Extend AppError with metadata
-8. **Two-Tier Testing**: Unit tests + property-based tests for every feature
-9. **File Organization**: Consistent naming (`*.types`, `*.make`, `*.guard`, `*.ops`, `*.errors`)
-10. **ES Modules**: Use `.js` extensions in imports
+- [ ] Exportar tipos desde `*.types.ts`
+- [ ] Exportar factories desde `*.make.ts`
+- [ ] Exportar guards desde `*.guard.ts`
+- [ ] Exportar operaciones desde `*.ops.ts`
 
 ---
 
-## 📚 Reference Implementation
+## Resumen de Principios Clave
 
-For a complete reference implementation, see the domains in this project:
-
-- `src/currency/` - Simple branded type with validation
-- `src/money/` - Complex type with discriminated unions and operations
-- `src/fx/` - Advanced patterns with dependency injection
-
-Each domain demonstrates all patterns described in this blueprint.
-
----
-
-**Blueprint Version:** 2.1
-**Last Updated:** 2025-01-13
-
-**Changelog:**
-
-- v2.1: Added flyweight pattern decision workflow for discriminated unions
-- v2.1: LLM must explain JS equality, analyze trade-offs, and ask user before implementing discriminated unions
-- v2.1: Added flyweight implementation pattern template with cache management
-- v2.0: Added comprehensive AI/LLM assistant instructions section with mandatory rules, forbidden patterns, checklist, and pattern templates
-- v1.1: Added hybrid approach guidance (branded types for primitives, discriminated unions for entities)
-- v1.1: Added detailed explanation of why discriminated unions lose generic parameters
-- v1.1: Added comprehensive equality operations guidance
-- v1.0: Initial blueprint release
+1. **Estrategia de Tipos Híbrida**: Usa branded types para primitivos validados simples (Currency, EmailAddress, UserId) y discriminated unions para entidades de dominio complejas (Money, Order, User)
+2. **Validación en Runtime**: Todas las factories DEBEN validar inputs antes de crear objetos
+3. **Inmutabilidad en Todas Partes**: Todas las estructuras de datos son readonly y nunca se mutan
+4. **Patrón Factory**: Todos los objetos creados mediante funciones factory validadas
+5. **Type Narrowing**: Usa discriminador `kind` para entidades, branded types preservan parámetros genéricos para primitivos
+6. **Funciones Guard**: Validación en runtime con type predicates para cada tipo de dominio
+7. **Errores Estructurados**: Extender AppError con metadatos
+8. **Testing de Dos Niveles**: Tests unitarios + tests basados en propiedades para cada funcionalidad
+9. **Organización de Archivos**: Nomenclatura consistente (`*.types`, `*.make`, `*.guard`, `*.ops`, `*.errors`)
+10. **ES Modules**: Usa extensiones `.js` en imports
