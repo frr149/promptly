@@ -1,23 +1,23 @@
-Review the following {{ language|default("Python") }} code:
+Revisa el siguiente código en {{ language|default("Python") }}:
 
 ```{{ language|lower|default("python") }}
 {{ code }}
 ```
 
 {% if focus %}
-Focus on:
+Céntrate en:
 {% for area in focus %}
 - {{ area }}
 {% endfor %}
 {% else %}
-Focus on:
-- Code quality and best practices
-- Potential bugs
-- Performance issues
-- Security vulnerabilities
+Céntrate en:
+- Calidad del código y buenas prácticas
+- Posibles bugs
+- Problemas de rendimiento
+- Vulnerabilidades de seguridad
 {% endif %}
 
-Please provide:
-1. Summary of findings
-2. Specific issues with line numbers
-3. Suggested improvements
+Por favor, proporciona:
+1. Resumen de hallazgos
+2. Problemas específicos con números de línea
+3. Mejoras sugeridas
