@@ -63,6 +63,15 @@ Cuando generes código TypeScript para este proyecto, DEBES seguir estas reglas 
     - USA `bigint` para dinero y cálculos enteros precisos
     - NUNCA uses `number` para cálculos financieros
     - Sintaxis literal: `42n` (con sufijo `n`)
+  
+11. **Routing Type-Safe (OBLIGATORIO):**
+      - NUNCA uses rutas como cadenas hardcodeadas (e.g., `navigate('/project/123')`)
+      - CREA archivo centralizado de rutas (e.g., `src/lib/routes.ts`)
+      - DEFINE constantes para rutas estáticas y funciones para rutas dinámicas
+      - USA los mismos identificadores en definiciones de `Route` y llamadas a `navigate()`
+      - BENEFICIOS: type-safety, autocomplete, refactoring seguro, sin typos
+
+
 
 ### PATRONES PROHIBIDOS (NUNCA)
 
