@@ -70,8 +70,16 @@ Cuando generes código TypeScript para este proyecto, DEBES seguir estas reglas 
       - DEFINE constantes para rutas estáticas y funciones para rutas dinámicas
       - USA los mismos identificadores en definiciones de `Route` y llamadas a `navigate()`
       - BENEFICIOS: type-safety, autocomplete, refactoring seguro, sin typos
+      - 
+ 12. **Internacionalización (i18n) OBLIGATORIA:**
+      - NUNCA uses cadenas de texto literales en componentes UI (JSX)
+      - SIEMPRE usa funciones de traducción (t(), useTranslation hook)
+      - ORGANIZA traducciones por namespace/feature (auth, projects, common)
+      - USA keys descriptivas y jerárquicas (auth.login.submitButton, no "button1")
+      - CONFIGURA i18n desde el día 1, antes de crear UI
+      - BENEFICIOS: preparado para múltiples idiomas, textos centralizados, fácil de mantener
 
-
+  
 
 ### PATRONES PROHIBIDOS (NUNCA)
 
@@ -86,6 +94,7 @@ Cuando generes código TypeScript para este proyecto, DEBES seguir estas reglas 
 ❌ **NUNCA** omitas la validación de type guard antes de operaciones
 ❌ **NUNCA** escribas solo tests unitarios - incluye también tests basados en propiedades
 ❌ **NUNCA** añadas referencias a ti mismo (Claude, Claude Code, asistentes IA, etc.) en código, comentarios, documentación o mensajes de commit
+❌ **NUNCA** uses cadenas literales en componentes UI - usa i18n desde el principio
 
 ### CHECKLIST DE GENERACIÓN DE CÓDIGO
 
